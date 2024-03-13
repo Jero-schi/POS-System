@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>POS System</title>
 </head>
 <body>
     <div class="menu">
@@ -16,12 +16,23 @@
             <li>Historial</li>
             <li>Others</li>
         </ul>
+
+        <div class="div-footer">
+            <div class="btn-footer">
+                <p>Ventas totales:</p>
+                <p class="ventas-totales">$9999</p>
+            </div>
+            <div class="btn-footer">
+                <p>Clientes totales:</p>
+                <p class="clientes-totales">99</p>
+            </div>
+        </div>
     </div>
 
     <main>
         <input type="search" name="" id="" placeholder="Search">
 
-        <div class="">
+        <div class="div-types">
             <div class="btn-types"></div>
             <div class="btn-types"></div>
             <div class="btn-types"></div>
@@ -32,44 +43,72 @@
             <div class="btn-types"></div>
         </div>
 
-        <div class="">
-            <div class="btn-recientes"></div>
-            <div class="btn-recientes"></div>
-            <div class="btn-recientes"></div>
-            <div class="btn-recientes"></div>
-            <div class="btn-recientes"></div>
-            <div class="btn-recientes"></div>
-            <div class="btn-recientes"></div>
-            <div class="btn-recientes"></div>
-        </div>
+        <hr>
 
-        <div class="">
-            <div class="btn-footer"></div>
-            <div class="btn-footer"></div>
+        <div class="div-recientes">
+            <div class="btn-recientes"></div>
+            <div class="btn-recientes"></div>
+            <div class="btn-recientes"></div>
+            <div class="btn-recientes"></div>
+            <div class="btn-recientes"></div>
+            <div class="btn-recientes"></div>
+            <div class="btn-recientes"></div>
+            <div class="btn-recientes"></div>
         </div>
     </main>
 
     <article>
-        <p>Cliente 99</p>
+        <p class="cliente">Cliente 99</p>
 
         <div class="div-productos">
-            <div class="producto"></div>
-            <div class="producto"></div>
+            <div class="producto">
+                <p class="title-product">Coca Cola 500ml</p>
+                <p class="cantidad-product">x3</p>
+
+                <p class="price-product">$999</p>
+                <img src="" alt="">
+            </div>
+            
+            <div class="producto">
+                <p class="title-product">Coca Cola 500ml</p>
+                <p class="cantidad-product">x3</p>
+
+                <p class="price-product">$999</p>
+                <img src="" alt="">
+            </div>
         </div>
 
         <div class="ticket">
-            <div class="pretotal-ticket"></div>
+            <div class="pretotal-ticket">
+                <div class="subtotal-ticket">
+                    <p>Subtotal</p>
+                    <p class="price-subtotal">$9999</p>
+                </div>
+                <div class="aumento-ticket">
+                    <p>Aumento</p>
+                    <p class="price-aumento">$0</p>
+                </div>
+            </div>
             <hr>
-            <div class="total-ticket"></div>
-
-            <div>
-                <p>Formas de pago</p>
-                <div class="payment-method"></div>
-                <div class="payment-method"></div>
-                <div class="payment-method"></div>
+            <div class="total-ticket">
+                <p>Total</p>
+                <p class="price-total">$9999</p>
             </div>
 
-            <button>Finalizar compra</button>
+            <p class="p-formas-pago">Formas de pago</p>
+            <div class="div-formas-pago">
+                <div class="payment-method">
+                    <img src="imgs/Recurso 2.svg" alt="">
+                </div>
+                <div class="payment-method">
+                    <img src="imgs/Recurso 1.svg" alt="">
+                </div>
+                <div class="payment-method">
+                    <img src="imgs/Recurso 3.svg" alt="">
+                </div>
+            </div>
+
+            <button class="btn-finish-compra">Finalizar compra</button>
         </div>
     </article>
 </body>
