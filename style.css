@@ -201,6 +201,7 @@ main .div-recientes .btn-recientes .div-sumaresta-recientes {
     border: 1px solid #fff;
     border-radius: 8px;
     text-align: center;
+    cursor: pointer;
 }
 
 article {
@@ -251,6 +252,7 @@ article .div-productos .producto .title-product {
 article .div-productos .producto .price-product {
     width: 100%;
     text-align: end;
+    margin-right: 8px;
 }
 
 article .ticket {

@@ -5,7 +5,6 @@ const inputSearch = document.querySelector('#busqueda')
 const divCategorias = document.querySelector('.div-types')
 const divRecientes = document.querySelector('.div-recientes')
 
-console.log(divCategorias);
 
 menus.forEach(menu => 
     menu.addEventListener('click', () => {
@@ -19,10 +18,7 @@ inputSearch.addEventListener('input', () => {
     console.log(inputSearch.value);
     let results = alimentos.filter(item => 
         item.title.includes(inputSearch.value))
-    console.log(results);
 })
-
-console.log(alimentos);
 
 function pintarCategorias() {
     categories.forEach((item) => {
@@ -43,7 +39,6 @@ pintarCategorias()
 function pintarRecientes() {
     for (let i = 0; i < 8; i++) {
         const reciente = alimentos[i];
-        console.log(reciente);
         divRecientes.innerHTML += `
         <div class="btn-recientes">
             <p class="title-product-reciente">${reciente.title}</p>
@@ -63,6 +58,32 @@ function pintarRecientes() {
     }
 }
 pintarRecientes()
+
+const sumaReciente = document.querySelectorAll('.simbolo-suma')
+const restaReciente = document.querySelectorAll('.simbolo-resta')
+const contadorReciente =  document.querySelectorAll('.contador-sumaresta')
+
+console.log(sumaReciente);
+console.log(restaReciente);
+console.log(contadorReciente);
+
+sumaReciente.forEach((item, index) => {
+    item.addEventListener('click', () => {
+        let contador = contadorReciente[index].textContent
+        contador++
+        contadorReciente[index].innerHTML = contador
+    })
+})
+
+restaReciente.forEach((item, i) => {
+    item.addEventListener('click', () => {
+        let contador = contadorReciente[i].textContent
+        if (contador > 0) {
+            contador--
+            contadorReciente[i].innerHTML = contador
+        }
+    })
+})
 
 
 {/* <div class="btn-types">
