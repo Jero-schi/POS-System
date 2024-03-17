@@ -1,4 +1,3 @@
-console.log('hola');
 
 const menus = document.querySelectorAll('.menus')
 const inputSearch = document.querySelector('#busqueda')
@@ -6,6 +5,12 @@ const divCategorias = document.querySelector('.div-types')
 const divRecientes = document.querySelector('.div-recientes')
 
 let productosTicket = []
+let ticket = {}
+let formasDePago = {
+    efectivo: 1,
+    tarjeta: 1.15,
+    billeteraVirtual: 1
+}
 
 menus.forEach(menu => 
     menu.addEventListener('click', () => {
@@ -16,7 +21,6 @@ menus.forEach(menu =>
     }));
 
 inputSearch.addEventListener('input', () => {
-    console.log(inputSearch.value);
     let results = alimentos.filter(item => 
         item.title.includes(inputSearch.value))
     console.log(results);
@@ -69,9 +73,6 @@ const contadorReciente =  document.querySelectorAll('.contador-sumaresta')
 const productosRecientes = document.querySelectorAll('.info-recientes')
 const cliente = document.querySelector('.cliente')
 
-console.log(cliente);
-// console.log(contadorReciente[0]);
-
 
 sumaReciente.forEach((item, index) => {
     item.addEventListener('click', () => {
@@ -93,82 +94,192 @@ restaReciente.forEach((item, i) => {
 
 productosRecientes.forEach((item, i) => {
     item.addEventListener('click', () => {
-        console.log(item, i);
         const titlesProducts = document.querySelectorAll('.title-product-reciente')
         const titleProduct = titlesProducts[i].textContent
         const cantidadProductos = Number(contadorReciente[i].textContent)
         const objProduct = alimentos.find(alimento => alimento.title === titleProduct)
-        console.log(titleProduct,cantidadProductos);
-        // console.log(objProduct);
+        const addProduct = {
+            ...objProduct,
+            numeroProducto: 0,
+            cantidad: cantidadProductos
+        }
 
-        pintarProductosTicket(objProduct, cantidadProductos)
+        if (!productosTicket.some(obj => obj.id === objProduct.id)) {
+            productosTicket.push(addProduct)
+            productosTicket.forEach((obj, index) => {
+                obj.numeroProducto = index + 1
+            })
+        } else {
+            const hola = productosTicket.find(producto => producto.id === objProduct.id)
+            hola.cantidad += cantidadProductos
+        }
+
+        contadorReciente[i].textContent = '1'
+
+        pintarProductosTicket()
     })
 })
 
-function pintarProductosTicket(obj,cantidad) {
-    console.log(obj);
+function pintarProductosTicket() {
     let newDiv = document.createElement('div')
     if (!document.querySelector('.div-productos')) {
         newDiv.classList.add('div-productos')
     
-        cliente.insertAdjacentElement('afterend', newDiv)  
-        newDiv.innerHTML += `
+        cliente.insertAdjacentElement('afterend', newDiv) 
+        productosTicket.forEach((item, index) => {
+            newDiv.innerHTML += `
             <div class="producto">
-                <p class="title-product">${obj.title}</p>
-                <p class="cantidad-product">x${cantidad}</p>
+                <p class="title-product">${item.title}</p>
+                <p class="cantidad-product">x${item.cantidad}</p>
     
-                <p class="price-product">$${obj.precio * cantidad}</p>
-                <img src="imgs/X.svg" alt="Borrar producto">
+                <p class="price-product">$${item.precio * item.cantidad}</p>
+                <div class="x-borrar">
+                    <img src="imgs/X.svg" alt="Borrar producto">
+                </div>
             </div>
-        `
-        productosTicket.push(obj)
-        console.log(productosTicket);
+            `
+        });
     } else {
-        const producto = document.querySelector('.producto')
-        const nuevo = document.createElement('div')
-        nuevo.classList.add('producto')
+        const divProductos = document.querySelector('.div-productos')
+        divProductos.innerHTML = ''
         
-        producto.insertAdjacentElement('beforebegin',nuevo)
-        nuevo.innerHTML = `
-        <p class="title-product">${obj.title}</p>
-        <p class="cantidad-product">x${cantidad}</p>
-        
-        <p class="price-product">$${obj.precio * cantidad}</p>
-        <img src="imgs/X.svg" alt="Borrar producto">
-        `
-        productosTicket.push(obj)
-        console.log(productosTicket);
+        productosTicket.forEach((item, index) => {
+            divProductos.innerHTML += `
+                <div class="producto">
+                    <p class="title-product">${item.title}</p>
+                    <p class="cantidad-product">x${item.cantidad}</p>
+    
+                    <p class="price-product">$${item.precio * item.cantidad}</p>
+                    <div class="x-borrar">
+                        <img src="imgs/X.svg" alt="Borrar producto">
+                    </div>
+
+                </div>
+            `
+        })
     }
 
+
+    // setTimeout(borrarProduct, 2000)
+    borrarProduct()
+    pintarTicket()
+    
 }
 
-{/* <div class="producto">
-                <p class="title-product">Coca Cola 500ml</p>
-                <p class="cantidad-product">x3</p>
+function borrarProduct() {
+    const borrarProducto = document.querySelectorAll('.x-borrar')
+    console.log(borrarProducto);
+    borrarProducto.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            productosTicket.splice(index, 1)
+            if (productosTicket.length == 0) {
+                
+            } 
+            pintarProductosTicket()
+        }) 
+    })
+}
 
-                <p class="price-product">$999</p>
-                <img src="imgs/X.svg" alt="">
-            </div> */}
+const subtotalTicket = document.querySelector('.price-subtotal')
+const aumentoTicket = document.querySelector('.price-aumento')
+const totalTicket = document.querySelector('.price-total')
 
-{/* <div class="btn-types">
-    <img src="imgs/Group.svg" alt="">
-    <div>
-        <p class="category-product">Bebidas</p>
-        <p class="cantidad-items">99 items</p>
-    </div>
-</div> */}
 
-{/* <div class="btn-recientes">
-                <p class="title-product-reciente">Coca Cola 500ml</p>
-                <p class="price-product-reciente">$999</p>
+function pintarTicket() {
+    ticket.productos = [productosTicket]
+    ticket.subtotal = productosTicket.reduce((ite, obj) => ite + obj.precio*obj.cantidad, 0)
+    ticket.aumento = 1
+    ticket.formaPago = 'Efectivo'
+    ticket.total = (ticket.subtotal * ticket.aumento).toFixed(2)
+    totalTicket.innerHTML = `$${ticket.total}`
+    aumentoTicket.innerHTML = `$0`
+    
+    subtotalTicket.innerHTML = `$${ticket.subtotal}`
+}
 
-                <div class="div-sumaresta-recientes">
-                    <div class="simbolo-resta">
-                        <p>-</p>
-                    </div>
-                    <p class="contador-sumaresta">0</p>
-                    <div class="simbolo-suma">
-                        <p>+</p>
-                    </div>
-                </div>
-            </div> */}
+const btnFormasPago = document.querySelectorAll('.payment-method')
+
+
+btnFormasPago.forEach((item, index) => {
+    item.addEventListener('click', () => {
+        btnFormasPago.forEach(btn => {
+            btn.classList.remove('color-forma-pago')
+        })
+        item.classList.add('color-forma-pago')
+
+        const divProductos = document.querySelector('.div-productos')
+        if (divProductos) {
+            if (index == 0) {
+                ticket.aumento = 1
+                ticket.total = (ticket.subtotal * ticket.aumento).toFixed(2)
+                ticket.formaPago = 'Efectivo'
+                
+                totalTicket.innerHTML = `$${ticket.total}`
+                aumentoTicket.innerHTML = `$0`
+                
+            } else if (index == 1) {
+                ticket.aumento = formasDePago.tarjeta 
+                ticket.total = (ticket.subtotal * ticket.aumento).toFixed(2)
+                ticket.formaPago = 'Tarjeta'
+                
+                totalTicket.innerHTML = `$${ticket.total}`
+                aumentoTicket.innerHTML = `$${(ticket.total - ticket.subtotal).toFixed(2)}`
+                
+            } else {
+                ticket.aumento = 1
+                ticket.total = Math.ceil(ticket.subtotal * ticket.aumento)
+                ticket.formaPago = 'Billetera virtual'
+                
+                totalTicket.innerHTML = `$${ticket.total}`
+                aumentoTicket.innerHTML = `$0`
+            }
+        }
+    })
+})
+
+const finalizarCompra = document.querySelector('.btn-finish-compra')
+
+finalizarCompra.addEventListener('click', () => {
+    console.log('hola');
+    console.log(ticket);
+    if (productosTicket.length > 0) {
+        historialVentasDay.push(ticket)
+        productosTicket = []
+        ticket = {}
+        const divProductos = document.querySelector('.div-productos')
+        divProductos.remove()
+    
+        pintarTicket()
+        btnFormasPago.forEach(btn => {
+            btn.classList.remove('color-forma-pago')
+        })
+        btnFormasPago[0].classList.add('color-forma-pago')
+        console.log(historialVentasDay);
+        console.log(ticket);
+    }
+    console.log(historialVentasDay);
+    ventasTotales()
+    pintarVentasDiarias()
+})
+
+const ventasDiarias = document.querySelector('.ventas-totales')
+const clientesDiarios = document.querySelector('.clientes-totales')
+
+console.log({ventasDiarias, clientesDiarios});
+
+function pintarVentasDiarias() {
+    const ventasTotaless = ventasTotales()
+    const clientesTotales = historialVentasDay.length
+    console.log(clientesTotales);
+    ventasDiarias.innerHTML = `$${ventasTotaless}`
+    clientesDiarios.innerHTML = clientesTotales
+}
+
+// btnFormasPago[0].addEventListener('click', () => {
+//     console.log('cash');
+//     ticket.aumento = formasDePago.efectivo
+//     ticket.formaPago = 'efectivo'
+//     console.log(ticket);
+//     totalTicket.innerHTML = `$${ticket.total}`
+//     // aumentoTicket.innerHTML = `$${Math.ceil(ticket.total - ticket.subtotal)}`
+// })
