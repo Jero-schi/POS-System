@@ -40,7 +40,7 @@ function pintarCategorias() {
         `
     })
 }
-pintarCategorias()
+// pintarCategorias()
 
 function pintarRecientes() {
     for (let i = 0; i < 8; i++) {
@@ -65,7 +65,7 @@ function pintarRecientes() {
         `
     }
 }
-pintarRecientes()
+// pintarRecientes()
 
 const sumaReciente = document.querySelectorAll('.simbolo-suma')
 const restaReciente = document.querySelectorAll('.simbolo-resta')
@@ -173,7 +173,7 @@ function borrarProduct() {
         item.addEventListener('click', () => {
             productosTicket.splice(index, 1)
             if (productosTicket.length == 0) {
-                
+
             } 
             pintarProductosTicket()
         }) 
