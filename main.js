@@ -20,12 +20,6 @@ menus.forEach(menu =>
         menu.classList.add('color-menu')
     }));
 
-inputSearch.addEventListener('input', () => {
-    let results = alimentos.filter(item => 
-        item.title.includes(inputSearch.value))
-    console.log(results);
-})
-
 function pintarCategorias() {
     categories.forEach((item) => {
         
@@ -363,10 +357,38 @@ function pintarListaProductos() {
                 objProduct.cantidad ++
             }
             console.log(addProduct);
-            // pintarProductosTicket()
+            pintarProductosTicket()
         })
     })
 }
+
+inputSearch.addEventListener('input', () => {
+    divCategorias.classList.add('ocultar')
+    divRecientes.classList.add('ocultar')
+    hr.classList.add('ocultar')
+    
+    divListaCategorias.classList.remove('ocultar')
+    divListaProductos.classList.remove('ocultar')
+
+    divListaProductos.innerHTML = ''
+
+    let results = alimentos.filter(item => item.title.toLowerCase().includes(inputSearch.value.toLowerCase()))
+    productosCategoria = results
+
+    if (inputSearch.value == '') {
+        console.log('hola');
+        divCategorias.classList.remove('ocultar')
+        divRecientes.classList.remove('ocultar')
+        hr.classList.remove('ocultar')
+        
+        divListaCategorias.classList.add('ocultar')
+        divListaProductos.classList.add('ocultar')
+    }
+
+    pintarListaProductos()
+    console.log(productosCategoria);
+})
+
 
 function restarStock() {
     const arrayProductos = historialVentasDay[historialVentasDay.length-1].productos
