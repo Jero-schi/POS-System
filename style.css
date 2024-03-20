@@ -22,6 +22,14 @@ hr {
     border: 1px dashed #8e8e8e;
 }
 
+.ocultar {
+    display: none!important;
+}
+
+.color-principal {
+    background-color: var(--principal-color)!important;
+}
+
 body {
     background-color: var(--principal-color);
     color: #fff;
@@ -229,6 +237,7 @@ main .categorias .categoria {
     padding: 4px 8px;
     border: 1px solid #fff;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 main .lista-productos {
@@ -259,6 +268,8 @@ main .lista-productos .lista-producto {
 
     font-size: 4rem;
     white-space: nowrap;
+
+    cursor: pointer;
 }
 
 main .lista-productos .lista-producto :nth-child(1) {

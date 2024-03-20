@@ -40,7 +40,7 @@ function pintarCategorias() {
         `
     })
 }
-// pintarCategorias()
+pintarCategorias()
 
 function pintarRecientes() {
     for (let i = 0; i < 8; i++) {
@@ -65,7 +65,7 @@ function pintarRecientes() {
         `
     }
 }
-// pintarRecientes()
+pintarRecientes()
 
 const sumaReciente = document.querySelectorAll('.simbolo-suma')
 const restaReciente = document.querySelectorAll('.simbolo-resta')
@@ -112,6 +112,7 @@ productosRecientes.forEach((item, i) => {
         } else {
             const hola = productosTicket.find(producto => producto.id === objProduct.id)
             hola.cantidad += cantidadProductos
+            console.log(hola);
         }
 
         contadorReciente[i].textContent = '1'
@@ -172,9 +173,9 @@ function borrarProduct() {
     borrarProducto.forEach((item, index) => {
         item.addEventListener('click', () => {
             productosTicket.splice(index, 1)
-            if (productosTicket.length == 0) {
+            // if (productosTicket.length == 0) {
 
-            } 
+            // } 
             pintarProductosTicket()
         }) 
     })
@@ -260,6 +261,7 @@ finalizarCompra.addEventListener('click', () => {
     console.log(historialVentasDay);
     ventasTotales()
     pintarVentasDiarias()
+    restarStock()
 })
 
 const ventasDiarias = document.querySelector('.ventas-totales')
@@ -275,11 +277,117 @@ function pintarVentasDiarias() {
     clientesDiarios.innerHTML = clientesTotales
 }
 
-// btnFormasPago[0].addEventListener('click', () => {
-//     console.log('cash');
-//     ticket.aumento = formasDePago.efectivo
-//     ticket.formaPago = 'efectivo'
-//     console.log(ticket);
-//     totalTicket.innerHTML = `$${ticket.total}`
-//     // aumentoTicket.innerHTML = `$${Math.ceil(ticket.total - ticket.subtotal)}`
+const btnsCategorias =  document.querySelectorAll('.btn-types')
+const divListaCategorias = document.querySelector('.categorias')
+const divListaProductos = document.querySelector('.lista-productos')
+const nameCategoria = document.querySelectorAll('.category-product')
+const hr = document.querySelector('hr')
+
+let productosCategoria
+
+btnsCategorias.forEach((item, index) => {
+    item.addEventListener('click', () => {
+        divCategorias.classList.add('ocultar')
+        divRecientes.classList.add('ocultar')
+        hr.classList.add('ocultar')
+        
+        divListaCategorias.classList.remove('ocultar')
+        divListaProductos.classList.remove('ocultar')
+        
+        const nombreCategoria = nameCategoria[index].textContent
+        productosCategoria = alimentos.filter(item => item.categoria.includes(nombreCategoria))
+        
+        const nameCategoriasLista = document.querySelectorAll('.categoria')
+        nameCategoriasLista[index].classList.add('color-principal')
+        
+        pintarListaProductos()
+    })
+
+})
+
+function pintarListaCategorias(name) {
+    categories.forEach((item,index) => {
+        divListaCategorias.innerHTML += `
+        <p class="categoria">${item}</p>
+        `
+    })
+}
+pintarListaCategorias()
+
+const btnsListaCategorias = document.querySelectorAll('.categoria')
+
+btnsListaCategorias.forEach((item, index) => {
+    item.addEventListener('click', () => {
+        btnsListaCategorias.forEach(item => {
+            item.classList.remove('color-principal')
+        })
+        item.classList.add('color-principal')
+        const nombreCategoria = item.textContent
+        
+        productosCategoria = alimentos.filter(item => item.categoria.includes(nombreCategoria))
+
+        divListaProductos.innerHTML = ''
+
+        pintarListaProductos()
+    })
+})
+
+function pintarListaProductos() {
+    productosCategoria.forEach((item, index) => {
+        divListaProductos.innerHTML += `
+        <div class="lista-producto">
+            <p class="name-lista">${item.title}</p>
+            <p class="price-lista">$${item.precio}</p>
+            <p class="stock-lista">${item.stock} unidades</p>
+        </div>
+        `
+    })
+    const listaProducto = document.querySelectorAll('.lista-producto')
+    const nameListaProducto = document.querySelectorAll('.name-lista')
+
+    console.log(nameListaProducto);
+    listaProducto.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            const titleProduct = nameListaProducto[index].textContent;
+            const producto = alimentos.find(alimento => alimento.title === titleProduct)
+            const addProduct = {
+                ...producto,
+                numeroProducto: productosTicket.length + 1,
+                cantidad: 1
+            }
+
+            if (!productosTicket.some(obj => obj.id === addProduct.id)) {
+                productosTicket.push(addProduct)
+            } else {
+                const objProduct = productosTicket.find(item => item.id === addProduct.id)
+                objProduct.cantidad ++
+            }
+            console.log(addProduct);
+            // pintarProductosTicket()
+        })
+    })
+}
+
+function restarStock() {
+    const arrayProductos = historialVentasDay[historialVentasDay.length-1].productos
+    arrayProductos[0].forEach((item, index) => {
+        const alimento = alimentos.find(producto => producto.id === item.id)
+        console.log(alimento);
+        console.log(item.cantidad)
+        alimento.stock -= item.cantidad
+        console.log(alimentos);
+    })
+    const productos = {}
+    console.log(arrayProductos);
+}
+
+// item.addEventListener('click', () => {
+//     console.log(item);
+//     productosTicket.push(item)
+//     pintarProductosTicket()
 // })
+// const addProduct = {
+//     ...objProduct,
+//     numeroProducto: 0,
+//     cantidad: cantidadProductos
+// }
