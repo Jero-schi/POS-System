@@ -1,4 +1,3 @@
-
 const menus = document.querySelectorAll('.menus')
 const inputSearch = document.querySelector('#busqueda')
 const divCategorias = document.querySelector('.div-types')
@@ -106,7 +105,6 @@ productosRecientes.forEach((item, i) => {
         } else {
             const hola = productosTicket.find(producto => producto.id === objProduct.id)
             hola.cantidad += cantidadProductos
-            console.log(hola);
         }
 
         contadorReciente[i].textContent = '1'
@@ -155,7 +153,6 @@ function pintarProductosTicket() {
     }
 
 
-    // setTimeout(borrarProduct, 2000)
     borrarProduct()
     pintarTicket()
     
@@ -163,13 +160,9 @@ function pintarProductosTicket() {
 
 function borrarProduct() {
     const borrarProducto = document.querySelectorAll('.x-borrar')
-    console.log(borrarProducto);
     borrarProducto.forEach((item, index) => {
         item.addEventListener('click', () => {
             productosTicket.splice(index, 1)
-            // if (productosTicket.length == 0) {
-
-            // } 
             pintarProductosTicket()
         }) 
     })
@@ -181,6 +174,7 @@ const totalTicket = document.querySelector('.price-total')
 
 
 function pintarTicket() {
+    ticket.numeroCliente = historialVentasDay.length +1
     ticket.productos = [productosTicket]
     ticket.subtotal = productosTicket.reduce((ite, obj) => ite + obj.precio*obj.cantidad, 0)
     ticket.aumento = 1
@@ -193,7 +187,6 @@ function pintarTicket() {
 }
 
 const btnFormasPago = document.querySelectorAll('.payment-method')
-
 
 btnFormasPago.forEach((item, index) => {
     item.addEventListener('click', () => {
@@ -235,8 +228,6 @@ btnFormasPago.forEach((item, index) => {
 const finalizarCompra = document.querySelector('.btn-finish-compra')
 
 finalizarCompra.addEventListener('click', () => {
-    console.log('hola');
-    console.log(ticket);
     if (productosTicket.length > 0) {
         historialVentasDay.push(ticket)
         productosTicket = []
@@ -249,8 +240,6 @@ finalizarCompra.addEventListener('click', () => {
             btn.classList.remove('color-forma-pago')
         })
         btnFormasPago[0].classList.add('color-forma-pago')
-        console.log(historialVentasDay);
-        console.log(ticket);
     }
     console.log(historialVentasDay);
     ventasTotales()
@@ -261,14 +250,13 @@ finalizarCompra.addEventListener('click', () => {
 const ventasDiarias = document.querySelector('.ventas-totales')
 const clientesDiarios = document.querySelector('.clientes-totales')
 
-console.log({ventasDiarias, clientesDiarios});
 
 function pintarVentasDiarias() {
     const ventasTotaless = ventasTotales()
     const clientesTotales = historialVentasDay.length
-    console.log(clientesTotales);
     ventasDiarias.innerHTML = `$${ventasTotaless}`
     clientesDiarios.innerHTML = clientesTotales
+    cliente.innerHTML = `Cliente ${clientesTotales + 1}`
 }
 
 const btnsCategorias =  document.querySelectorAll('.btn-types')
@@ -339,7 +327,6 @@ function pintarListaProductos() {
     const listaProducto = document.querySelectorAll('.lista-producto')
     const nameListaProducto = document.querySelectorAll('.name-lista')
 
-    console.log(nameListaProducto);
     listaProducto.forEach((item, index) => {
         item.addEventListener('click', () => {
             const titleProduct = nameListaProducto[index].textContent;
@@ -356,7 +343,6 @@ function pintarListaProductos() {
                 const objProduct = productosTicket.find(item => item.id === addProduct.id)
                 objProduct.cantidad ++
             }
-            console.log(addProduct);
             pintarProductosTicket()
         })
     })
@@ -376,7 +362,6 @@ inputSearch.addEventListener('input', () => {
     productosCategoria = results
 
     if (inputSearch.value == '') {
-        console.log('hola');
         divCategorias.classList.remove('ocultar')
         divRecientes.classList.remove('ocultar')
         hr.classList.remove('ocultar')
@@ -386,7 +371,6 @@ inputSearch.addEventListener('input', () => {
     }
 
     pintarListaProductos()
-    console.log(productosCategoria);
 })
 
 
@@ -394,13 +378,8 @@ function restarStock() {
     const arrayProductos = historialVentasDay[historialVentasDay.length-1].productos
     arrayProductos[0].forEach((item, index) => {
         const alimento = alimentos.find(producto => producto.id === item.id)
-        console.log(alimento);
-        console.log(item.cantidad)
         alimento.stock -= item.cantidad
-        console.log(alimentos);
     })
-    const productos = {}
-    console.log(arrayProductos);
 }
 
 // item.addEventListener('click', () => {

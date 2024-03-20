@@ -104,10 +104,8 @@ const categories = new Set(alimentos.map(alimento => alimento.categoria));
 function categorias(name) {
     const objCategories = alimentos.filter(item => item.categoria.includes(name))
     const itemsCategory = objCategories.length
-    // console.log(objCategories);
     return itemsCategory
 }
-// categorias('Carnes')
 
 function stock(nombre) {
     const producto = alimentos.filter(item => item.title.includes(nombre)) 
