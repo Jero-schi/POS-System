@@ -158,11 +158,29 @@ function pintarProductosTicket() {
     
 }
 
+let clickProlongado = false
+let temporizador
+
 function borrarProduct() {
     const borrarProducto = document.querySelectorAll('.x-borrar')
     borrarProducto.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            productosTicket.splice(index, 1)
+        item.addEventListener('mousedown', () => {
+            temporizador = setTimeout(() => {
+                clickProlongado = true
+                productosTicket.splice(index, 1)
+                pintarProductosTicket()
+            },300)
+        })
+
+        item.addEventListener('mouseup', () => {
+            clearTimeout(temporizador)
+            clickProlongado = false
+            console.log(productosTicket[index]);
+            if (productosTicket[index].cantidad > 1) {
+                productosTicket[index].cantidad--
+            } else {
+                productosTicket.splice(index, 1)
+            }
             pintarProductosTicket()
         }) 
     })
@@ -286,15 +304,29 @@ btnsCategorias.forEach((item, index) => {
     })
 
 })
+const imgAtras = document.createElement('img')
+imgAtras.src = 'imgs/Frame 65.svg'
 
-function pintarListaCategorias(name) {
+function pintarListaCategorias() {
     categories.forEach((item,index) => {
         divListaCategorias.innerHTML += `
         <p class="categoria">${item}</p>
         `
     })
+    divListaCategorias.appendChild(imgAtras)
 }
 pintarListaCategorias()
+
+imgAtras.addEventListener('click', () => {
+    divCategorias.classList.remove('ocultar')
+    divRecientes.classList.remove('ocultar')
+    hr.classList.remove('ocultar')
+    
+    divListaCategorias.classList.add('ocultar')
+    divListaProductos.classList.add('ocultar')
+
+    inputSearch.value = ''
+})
 
 const btnsListaCategorias = document.querySelectorAll('.categoria')
 
@@ -303,6 +335,7 @@ btnsListaCategorias.forEach((item, index) => {
         btnsListaCategorias.forEach(item => {
             item.classList.remove('color-principal')
         })
+        inputSearch.value = ''
         item.classList.add('color-principal')
         const nombreCategoria = item.textContent
         
@@ -355,6 +388,10 @@ inputSearch.addEventListener('input', () => {
     
     divListaCategorias.classList.remove('ocultar')
     divListaProductos.classList.remove('ocultar')
+
+    btnsListaCategorias.forEach(item => {
+        item.classList.remove('color-principal')
+    })
 
     divListaProductos.innerHTML = ''
 

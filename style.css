@@ -240,6 +240,12 @@ main .categorias .categoria {
     cursor: pointer;
 }
 
+main .categorias img {
+    height: 6rem;
+
+    cursor: pointer;
+}
+
 main .lista-productos {
     width: 100%;
 
